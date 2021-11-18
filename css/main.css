@@ -1,0 +1,49 @@
+*:focus {
+  outline: none;
+}
+
+* {
+   -moz-user-select: -moz-none;
+   -khtml-user-select: none;
+   -webkit-user-select: none;
+
+   /*
+     Introduced in IE 10.
+     See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/
+   */
+   -ms-user-select: none;
+   user-select: none;
+}
+
+html {
+  box-sizing: border-box;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  
+  padding: 0px;
+  margin: 0px;
+  
+  overflow: hidden;
+
+  font-family: Verdana;
+  font-size: 10pt;
+
+  background: black;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0px;
+  padding: 0px;
+  
+  font-family: sans-serif;
+  overflow: hidden;
+
+  line-height: 2;
+
+  background: black;  
+}
+
