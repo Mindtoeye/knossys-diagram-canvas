@@ -1,5 +1,5 @@
 {
-  "name": "VirtualDesktopDrydock",
+  "name": "KnossysFlowDiagramEditor",
   "version": "1.0.0",
   "description": "Development and testing of the Proscenium desktop paradigm",
   "main": "index.js",
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Knossys/AccordionPropertySheet.git"
+    "url": "git+https://github.com/Mindtoeye/knossys-diagram-canvas.git"
   },
   "keywords": [
     "react",
@@ -22,9 +22,9 @@
   "author": "Knossys",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Knossys/AccordionPropertySheet/wiki"
+    "url": "https://github.com/Mindtoeye/knossys-diagram-canvas"
   },
-  "homepage": "https://github.com/Knossys/AccordionPropertySheet/wiki",
+  "homepage": "https://github.com/Mindtoeye/knossys-diagram-canvas",
   "devDependencies": {
     "@babel/cli": "^7.16.0",
     "@babel/preset-env": "^7.15.8",
@@ -42,8 +42,10 @@
     "react-json-tree": "^0.11.2",
     "sass": "^1.43.4",
     "sass-loader": "^12.3.0",
-    "slate": "^0.47.8",
-    "slate-react": "^0.22.9",
+    "draft-js": "^0.11.7",
+    "react-contenteditable": "^3.3.6",
+    "react-json-tree": "^0.15.0",
+    "react-tabs": "^3.2.2",
     "webpack": "^5.64.1",
     "webpack-cli": "^4.9.1",
     "webpack-dev-server": "^4.3.1"
@@ -52,20 +54,10 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.25",
     "@fortawesome/free-solid-svg-icons": "^5.11.2",
     "@fortawesome/react-fontawesome": "^0.1.5",
-    "bootstrap": "^4.3.1",
     "history": "^4.10.1",
     "immutable": "^4.0.0-rc.12",
-    "rc-slider": "^8.7.1",
-    "react-ace": "^7.0.4",
-    "react-bootstrap": "^1.0.0-beta.12",
-    "react-cytoscapejs": "^1.2.0",
-    "react-datepicker": "^2.10.1",
     "react-draggable": "^4.0.3",
-    "react-editable-svg-label": "^2.0.3",
-    "react-portal": "^4.2.0",
     "react-router-dom": "^4.3.1",
-    "react-tabs": "^3.0.0",
-    "slate-editor": "^5.1.1",
     "style-loader": "^1.0.0"
   }
 }

@@ -1,0 +1,141 @@
+*:focus {
+  outline: none;
+}
+
+* {
+   -moz-user-select: -moz-none;
+   -khtml-user-select: none;
+   -webkit-user-select: none;
+
+   /*
+     Introduced in IE 10.
+     See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/
+   */
+   -ms-user-select: none;
+   user-select: none;
+}
+
+html {
+  box-sizing: border-box;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  
+  padding: 0px;
+  margin: 0px;
+  
+  overflow: hidden;
+
+  font-family: Verdana;
+  font-size: 10pt;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0px;
+  padding: 0px;
+  
+  font-family: sans-serif;
+  overflow: hidden;
+
+  line-height: 2;
+}
+
+.main {
+  margin: 0px;
+  padding: 0px;
+  border: 0px solid red;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.maincontainer {
+  margin: 0px;
+  padding: 10px;
+  border: 0px solid red;
+  height: 100%;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: row;
+
+  background: #585858;
+}
+
+.statusbarfloat {
+  position: absolute;
+  left: 20px;
+  bottom: 2px;
+  color: grey;
+}
+
+.slimstatusbar {
+  height: 16px;
+}
+
+.resizegripper {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  right: 0px;
+  bottom: 0px;
+  cursor: nwse-resize;
+}
+
+.smallinput {
+  width: 32px;
+  height: 22px;
+  border: 3px solid #eae6e6;
+  margin: 2px;
+  padding-left: 2.5px;
+  padding-top: 2px;
+  overflow: hidden;
+  float: left;
+}
+
+.code {
+  font-family: Courier;
+  font-size: 8pt;
+  -ms-user-select: text;
+  user-select: text;
+  overflow: auto;  
+}
+
+pre {
+  -ms-user-select: text;
+  user-select: text;
+}
+
+button {
+  min-width: 60px;
+  margin: 2px;
+}
+
+.codeinput {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  display: block;/*reset from inline*/
+  width: 100%;
+  height: 800px;
+  margin: 0;/*remove defaults*/
+  padding: 4px;  
+  border: 1px solid #333;
+  overflow-y: auto;/*resets IE*/
+  overflow-x: hidden;/*resets IE*/
+  resize: none;
+}
+
+.diagram {
+  flex: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.accessibility {
+  height: 100px;
+}

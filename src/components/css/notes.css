@@ -1,0 +1,32 @@
+.notecontainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;    
+  overflow-x: hidden;
+  background: #e4e4e4;
+  padding: 2px;
+}
+
+.note {
+  border: 1px solid #d2d1d1;
+  background: white;
+  resize: none;
+  width: 100%;
+  height: 100px;
+  margin-bottom: 4px;
+  padding: 2px;
+}
+
+.datelabel {
+  font-size: 6pt;
+  margin-left: 13px;
+  position: absolute;
+  bottom: -1px;
+  right: 14px;
+}
+
+.notewrapper {
+  margin: 4px;
+  margin-bottom: 13px;
+  overflow: hidden;
+}

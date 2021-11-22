@@ -1,0 +1,56 @@
+.gridDots {
+  background-image: radial-gradient(rgb(214, 214, 214) 5%, transparent 0);
+  background-size: 30px 30px;
+}
+
+.gridLines {
+  background-size: 40px 40px;
+  background-image: linear-gradient(to right, #000000 1px, transparent 1px), linear-gradient(to bottom, #0a0a0a 1px, transparent 1px);
+}
+
+.contentEditable {
+  overflow: auto;
+  background: rgb(245,245,245);
+  padding: 2px;
+  height: 100%;
+  pointer-events: none;
+}
+
+.foreignhider {
+  overflow: hidden;
+  background: rgb(245,245,245);
+  padding: 0px;	
+  margin: 0px;	
+  pointer-events: none;
+}
+
+.pointerfix {
+  pointer-events: none;
+}
+
+.pointerall {
+  pointer-events: all;
+}
+
+.svgcontainer {
+  width: 100%;
+  height: 100%;
+  background: rgb(220, 220, 220);
+  -webkit-box-shadow: inset 0px 0px 17px -7px rgba(0,0,0,0.59);
+  -moz-box-shadow: inset 0px 0px 17px -7px rgba(0,0,0,0.59);
+  box-shadow: inset 0px 0px 17px -7px rgba(0,0,0,0.59);
+}
+
+.svgcontainer-dark {
+  width: 100%;
+  height: 100%;  
+  -webkit-box-shadow: inset 0px 0px 17px -7px rgb(0 0 0 / 59%);
+  -moz-box-shadow: inset 0px 0px 17px -7px rgba(0,0,0,0.59);
+  box-shadow: inset 0px 0px 17px -7px rgb(0 0 0 / 59%);
+
+  background: rgb(52 52 52);
+
+  /*background-image: url('images/backgrounds/background-dark-01.jpg');*/
+  /*background-repeat: no-repeat;*/
+  /*background-size: cover;*/
+}

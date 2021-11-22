@@ -1,0 +1,100 @@
+
+.dialogcontrols {
+  height: 28px;
+  padding: 4px;
+  text-align: center;
+}
+
+.windowpanel {
+  position: absolute;
+  width: 180px;
+  /*height: 250px;*/
+  background: #f7f7f7;
+  border: 1px solid #c7c7c7;
+  -webkit-box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.28);
+  -moz-box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.28);
+  box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.28);
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  resize: both;
+}
+
+.windowpanelflex1 {
+  flex: 1;
+}
+
+.windowpanelflex0 {
+  flex: 0;
+}
+
+.dialogcontainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;    
+  overflow-x: hidden;
+  background: #e4e4e4;
+  padding: 2px;
+}
+
+.whitecontent {
+  background: #ffffff !important;
+  overflow-y: hidden;
+}
+
+.scrollcontent {
+  background: #ffffff;
+  overflow-y: scroll;
+}
+
+.content {
+  background: #ffffff; 
+}
+
+.centered {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.feedbackpopup {
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translate(-50%);
+  height: 85px;
+  width: 246px;
+  background: #ffff0033;
+  border: 3px solid grey;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.closebutton {
+  opacity: 0.5;
+  position: absolute;
+  right: 4px;
+  top: 7px;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  /* background: white; */
+
+  -webkit-transition: .2s ease-in-out;
+  transition: .2s ease-in-out;
+}
+
+.closebutton:hover {
+  opacity: 1;
+}
+
+.mouseover {
+  opacity: 0.5;
+  -webkit-transition: .2s ease-in-out;
+  transition: .2s ease-in-out;
+}
+
+.mouseover:hover {
+  opacity: 1;
+}

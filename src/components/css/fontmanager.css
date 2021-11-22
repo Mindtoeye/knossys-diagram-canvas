@@ -1,0 +1,27 @@
+
+.fontpanel {
+  position: absolute;
+  width: 212px;
+  height: 200px;
+  background: #f7f7f7;
+  border: 1px solid #c7c7c7;
+  bottom: 10px;
+  right: 10px;
+  /* overflow-y: scroll; */
+  -webkit-box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.28);
+  -moz-box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.28);
+  box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.28);
+  padding: 4px;
+  padding-top: 10px;
+}
+
+.fontsample {
+  background: white;
+  /* padding: 4px; */
+  text-align: center;
+  margin: 2px;
+  height: 55px;
+  border: 2px solid #e0dfdf;
+  vertical-align: middle;
+  line-height: 55px;
+}

@@ -1,0 +1,35 @@
+.undostack {
+  position: absolute;
+  width: 150px;
+  height: 200px;
+  background: #f7f7f7;
+  border: 1px solid #c7c7c7;
+  top: 10px;
+  right: 10px;
+  overflow-y: scroll;
+  -webkit-box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.28);
+  -moz-box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.28);
+  box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.28);
+}
+
+.undolist {
+  list-style-type: none;
+  margin: 2px;
+  padding: 2px;
+  font-size: 9pt;
+  line-height: 10pt;
+  color: #6d6c6c;
+}
+
+.undoitem {
+  background: #efeeee;
+  padding: 2px;
+  padding-left: 4px;
+  margin: 4px;
+  border: 0px;
+  border-radius: 2px;
+}
+
+.undoitem:hover {
+  background: #e4e1e1;
+}

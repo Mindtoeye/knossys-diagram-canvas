@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import '../../css/drydock.css';
+import '../css/drydock.css';
 
 /**
  *
@@ -23,7 +23,7 @@ class KDrydockWindow extends Component {
   render () {
     return (<div ref={this.refId} className="genericWindow" style={{'left' : this.props.x+'px', 'top': this.props.y+'px', 'width' : this.props.width+'px', 'height': this.props.height+'px'}}>
         <div className="title">
-        Knossys Generic Drydock Window
+        Knossys Flow Diagram Editor
         </div>
         <div className="content">
         {this.props.children}

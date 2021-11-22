@@ -63,15 +63,16 @@
 
   min-width: 541px;
   min-height: 328px;
-  max-height: 450px;
+  /*max-height: 450px;*/
 
   display: flex;
   flex-direction: column;
 }
 
 .genericWindow .content {
-  margin: 3px;
-  padding: 2px;
+  margin: 0px;
+  padding: 0px;
+
   flex: 1 1;
   background: #34343459;
   /*overflow-y: scroll;*/

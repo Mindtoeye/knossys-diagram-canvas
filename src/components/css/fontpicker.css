@@ -1,0 +1,133 @@
+.ReactFontPicker {
+    display: block;
+    /* margin-top: 2px; */
+    margin-bottom: 9px;
+    background: white;
+    padding: 2px;
+    padding-left: 5px;
+    padding-bottom: 0px;
+	}
+	.ReactFontPicker_Wrapper {
+    position: relative;
+    width: 100%;
+    height: 30px;
+    /*border-bottom: 1px solid #ddd;*/
+	}
+	.ReactFontPicker_Wrapper:hover {
+		cursor: pointer;
+	}
+	.ReactFontPicker_Label {
+		position: absolute;
+		top: 0px;
+		font-size: 15px;
+		color: #a0a0a0;
+	}
+	.ReactFontPicker_LabelFloat {
+    position: absolute;
+    font-size: 11px;
+    top: -7px;
+    color: #ababab;
+    -webkit-transition: .2s all ease-in-out;
+    -moz-transition: .2s all ease-in-out;
+    -ms-transition: .2s all ease-in-out;
+    -o-transition: .2s all ease-in-out;
+    transition: .2s all ease-in-out;
+	}
+	.ReactFontPicker_SelectedOption {
+    position: absolute;
+    height: 25px;
+    line-height: 35px;
+    font-size: 15px;
+	}
+	.ReactFontPicker_Button {
+		position: absolute;
+		right: 5px;
+		top: 12px;
+		width: 0;
+		height: 0;
+		border-style: solid;
+		border-width: 5px 6px 0 6px;
+		border-color: #dddddd transparent transparent transparent;
+	}
+	.ReactFontPicker_Button:hover {
+		cursor: pointer;
+	}
+	.ReactFontPicker_Options {
+		position: absolute;
+		top: -7.5px;
+		width: 100%;
+		height: auto;
+		max-height: 184px;
+		overflow-y: scroll;
+		/*padding-bottom: 15px;*/
+		/*padding-top: 15px;*/
+		float: left;
+		background-color: #fff;
+
+		box-shadow: 0px 0px 6px #ddd;
+		z-index: 999;
+
+		-webkit-transition: .15s all ease-in-out;
+		-moz-transition: .15s all ease-in-out;
+		-ms-transition: .15s all ease-in-out;
+		-o-transition: .15s all ease-in-out;
+		transition: .15s all ease-in-out;
+	}
+	.ReactFontPicker_OptionsHidden {
+		position: absolute;
+		top: -7.5px;
+		width: 100%;
+		height: 0px;
+		padding-bottom: 0;
+		padding-top: 0;
+		background-color: #fff;
+		overflow: hidden;
+
+		box-shadow: 0px 0px 6px #ddd;
+
+		-webkit-transition: .15s all ease-in-out;
+		-moz-transition: .15s all ease-in-out;
+		-ms-transition: .15s all ease-in-out;
+		-o-transition: .15s all ease-in-out;
+		transition: .15s all ease-in-out;
+	}
+	.ReactFontPicker_Option {
+		display: block;
+		width: calc(100% - 20px);
+		padding-left: 10px;
+		padding-right: 10px;
+		height: 30px;
+		line-height: 30px;
+		float: left;
+
+		-webkit-transition: .1s all ease-in-out;
+		-moz-transition: .1s all ease-in-out;
+		-ms-transition: .1s all ease-in-out;
+		-o-transition: .1s all ease-in-out;
+		transition: .1s all ease-in-out;
+	}
+	.ReactFontPicker_Option:hover {
+		background-color: #eee;
+	}
+	div.ReactFontPicker_Wrapper .ripple {
+		position: relative;
+		overflow: hidden;
+	}
+	div.ReactFontPicker_Wrapper .ripple-effect{
+		position: absolute;
+		border-radius: 50%;
+		width: 50px;
+		height: 50px;
+		background: white;
+		animation: ripple-animation 1.8s;
+	}
+	@keyframes ripple-animation {
+		from {
+			transform: scale(1);
+			opacity: 0.4;
+		}
+		to {
+			transform: scale(100);
+			opacity: 0;
+		}
+  }
