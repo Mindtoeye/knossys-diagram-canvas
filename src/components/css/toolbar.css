@@ -1,8 +1,9 @@
 
 .toolbarvertical {
-  width: 32px;
+  /* width: 32px; */
   display: flex;
-  margin-right: 12px;
+  margin-right: 6px;
+  margin-left: 6px;
   flex-direction: column;
 }
 

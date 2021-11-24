@@ -62,15 +62,20 @@ class GraphPanelModule extends React.Component {
    * 
    */
   settingsMouseUp (e) {
-    console.log ("settingsMouseUp ()");
+    console.log ("settingsMouseUp ("+e.button+")");
 
     e.preventDefault();
     e.stopPropagation();
 
-    if (this.props.changePanelSettings) {
-      this.props.changePanelSettings (this.props.panel.uuid);
-    } else {
-      console.log ("Error: no method provided to propagate show panel settings event");
+    if (e.button === 0) {
+      //console.log('Left click');
+      if (this.props.changePanelSettings) {
+        this.props.changePanelSettings (this.props.panel.uuid);
+      } else {
+        console.log ("Error: no method provided to propagate show panel settings event");
+      }
+    } else if (e.button === 2) {
+      console.log('Right click');
     }
   }  
 
@@ -86,6 +91,38 @@ class GraphPanelModule extends React.Component {
       console.log ("Error: no editNote prop available");
     }
   }    
+
+  /**
+   * 
+   */
+  generateConnectors (aPanel) {
+    let connectors=[];
+    let connectorKey=0;
+
+    if (this.props.panel.inputs) {
+      let yOffset=42;
+      for (let i=0;i<this.props.panel.inputs.length;i++) {
+        var inputObject=this.props.panel.inputs [i];
+        connectors.push(<circle key={"conn-circle-"+connectorKey} cx="0" cy={yOffset} r="6" fill="#cccccc" stroke="#444444" />);
+        connectors.push(<text key={"conn-text-"+connectorKey} x="10" y={yOffset+3} fontFamily="Arial" fontSize="10" className="pointerfix" style={{fill: "white", pointerEvents: "all", cursor: "pointer"}}>{inputObject.name}</text>);
+        yOffset+=20;
+        connectorKey++;
+      }
+    }
+    
+    if (this.props.panel.outputs) {
+      let yOffset=42;
+      for (let i=0;i<this.props.panel.outputs.length;i++) {
+        var outputObject=this.props.panel.outputs [i];
+        connectors.push(<circle key={"conn-circle-"+connectorKey} cx={this.props.panel.width} cy={yOffset} r="6" fill="#cccccc" stroke="#444444" />);
+        connectors.push(<text key={"conn-text-"+connectorKey} x={this.props.panel.width-50} y={yOffset+3} fontFamily="Arial" fontSize="10" className="pointerfix" style={{fill: "white", pointerEvents: "all", cursor: "pointer"}}>{outputObject.name}</text>);
+        yOffset+=20;
+        connectorKey++;
+      }
+    }
+
+    return (connectors);
+  }
 
   /**
    * 
@@ -161,13 +198,13 @@ class GraphPanelModule extends React.Component {
     let blockWidth=""+(this.props.panel.width-24)+"";
     let settingsIcon;
 
-    settingsIcon=<svg x={this.props.panel.width-42} y={4} width="16" height="16">
+    settingsIcon=<svg x={this.props.panel.width-40} y={4} width="16" height="16">
       <rect 
         x="0" 
         y="0" 
         width={16}
         height={16} 
-        style={{fill:"rgb(200,200,200)", fillOpacity: "0.7", pointerEvents: "all", cursor: "pointer"}}
+        style={{fill:"rgb(255,255,255)", fillOpacity: "0.7", pointerEvents: "all", cursor: "pointer"}}
         onMouseDown={this.defaultMouseDown.bind (this)}
         onMouseUp={this.settingsMouseUp.bind (this)}>
        </rect>
@@ -190,31 +227,7 @@ class GraphPanelModule extends React.Component {
           </div>
         </foreignObject>          
     } else {
-      connectors=[];
-
-      let connectorKey=0;
-
-      if (this.props.panel.inputs) {
-        let yOffset=42;
-        for (let i=0;i<this.props.panel.inputs.length;i++) {
-          var inputObject=this.props.panel.inputs [i];
-          connectors.push(<circle key={"conn-circle-"+connectorKey} cx="0" cy={yOffset} r="6" fill="#cccccc" stroke="#444444" />);
-          connectors.push(<text key={"conn-text-"+connectorKey} x="10" y={yOffset+3} fontFamily="Arial" fontSize="10" className="pointerfix" style={{fill: "white", pointerEvents: "all", cursor: "pointer"}}>{inputObject.name}</text>);
-          yOffset+=20;
-          connectorKey++;
-        }
-      }
-      
-      if (this.props.panel.outputs) {
-        let yOffset=42;
-        for (let i=0;i<this.props.panel.outputs.length;i++) {
-          var outputObject=this.props.panel.outputs [i];
-          connectors.push(<circle key={"conn-circle-"+connectorKey} cx={this.props.panel.width} cy={yOffset} r="6" fill="#cccccc" stroke="#444444" />);
-          connectors.push(<text key={"conn-text-"+connectorKey} x={this.props.panel.width-50} y={yOffset+3} fontFamily="Arial" fontSize="10" className="pointerfix" style={{fill: "white", pointerEvents: "all", cursor: "pointer"}}>{outputObject.name}</text>);
-          yOffset+=20;
-          connectorKey++;
-        }
-      }
+      connectors=this.generateConnectors (this.props.panel);
     }
 
     return (
@@ -239,7 +252,7 @@ class GraphPanelModule extends React.Component {
           style={{fill: "white", pointerEvents: "all", cursor: "pointer"}}>
           {this.props.panel.name}
         </text>
-        <NoteIndicator notes={this.props.panel.notes} x={(this.props.panel.width-23)} y="4" editNotes={this.onNotes.bind (this)}/>
+        <NoteIndicator notes={this.props.panel.notes} x={(this.props.panel.width-20)} y="4" editNotes={this.onNotes.bind (this)}/>
         {settingsIcon}
         {connectors}
         {handles}

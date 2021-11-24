@@ -1,11 +1,9 @@
 
-import * as OLI from '../oli/olibridge';
-
 var cookieJar={};
 var dataSource="COOKIE"; // Choices are COOKIE, OLI, CANVAS
 var permanence=null;
 var equalCharacter="=";
-var iLogosObject=null;
+var kObject=null;
 
 /**
  * Use this class as a middle layer to store data to either network, disk (Electron) or local storage
@@ -26,34 +24,10 @@ class DataPermanence {
   constructor (anObject) {
     console.log ("DataPermanence ()");
 
-    this.APIActivity=null;
-
-    OLI.initOLIBridge ();
+    kObject=anObject;
 
     permanence = this;
-
-    if (anObject) {
-      iLogosObject = anObject;
-    } else {
-      console.log ("Error: no data load object provided!");
-    }
-
-    if (OLI.getOLIBridge ()!=null) {
-      this.APIActivity=OLI.getOLIBridge ();
-      if (this.APIActivity!=null) {
-        dataSource="OLI";
-        console.log ("Switch data source to OLI");    
-      }
-    }
-
     permanence.reload ();
-  }
-
-  /**
-   *
-   */
-  getOLIActivity () {
-    return (OLI.getOLIBridge ());
   }
 
   /**
@@ -67,20 +41,9 @@ class DataPermanence {
    *
    */
   reload () {
-    //console.log ("reload ()");
-
-    if (dataSource=="OLI") {
-      this.APIActivity.getValue ("data",this.loadSuccess,this.loadFail);
-    } else {
-      /*
-      let allCookies = document.cookie;  
-      permanence.parse (allCookies);
-      */
-
-      let allCookies = window.localStorage.getItem ("iLogos");  
-      if (allCookies!=null) {
-        permanence.parse (allCookies);      
-      }
+    let allCookies = window.localStorage.getItem ("Knossys");  
+    if (allCookies!=null) {
+      permanence.parse (allCookies);      
     }
   }
 
@@ -88,13 +51,10 @@ class DataPermanence {
    *
    */ 
   loadSuccess (data) {
-    //console.log ("loadSuccess ()");
-    //console.log (data);
-
     permanence.parse (data);
 
-    if (iLogosObject!=null) {
-      iLogosObject.graphLoaded ();
+    if (kObject!=null) {
+      kObject.graphLoaded ();
     } else {
       console.log ("Internal error: data load handler not available");
     }
@@ -106,8 +66,8 @@ class DataPermanence {
   loadFail () {
     //console.log ("loadFail ()");
 
-    if (iLogosObject!=null) {
-      iLogosObject.graphLoaded ();
+    if (kObject!=null) {
+      kObject.graphLoaded ();
     } else {
       console.log ("Internal error: data load handler not available");
     }
@@ -128,9 +88,6 @@ class DataPermanence {
    *
    */
   save () {
-    //console.log ("save ()");
-    //console.log (cookieJar);
-
     let data="";
     let index=0;
 
@@ -145,17 +102,10 @@ class DataPermanence {
       index++;
     }
 
-    if (dataSource=="OLI") {
-      this.APIActivity.setValue ("data",data,this.saveSuccess,this.saveFail);
-    } else {
-      //console.log ("Cookie data: " + data);
+    window.localStorage.setItem ("Knossys",data);
 
-      //document.cookie = (data+";samesite=strict");
-      window.localStorage.setItem ("iLogos",data);
-
-      // Make sure that our internal model is the same as what's on disk
-      permanence.reload ();
-    }
+    // Make sure that our internal model is the same as what's on disk
+    permanence.reload ();
   }
 
   /**
@@ -176,7 +126,6 @@ class DataPermanence {
    *
    */
   parse (data) {
-    //console.log ("parse ()");
     let splitter=data.split (";");
      
     cookieJar={};
@@ -193,8 +142,6 @@ class DataPermanence {
    *
    */
   getValue (aKey) {
-    //console.log ("getValue ("+aKey+")");
-
     if (cookieJar.hasOwnProperty (aKey)) {
       return (cookieJar [aKey]);
     }
@@ -206,8 +153,6 @@ class DataPermanence {
    *
    */
   setValueEncoded (aKey,aValue) {
-    //console.log ("setValueEncoded ()");
-    //console.log (aValue);
     permanence.setValue (aKey,window.btoa(aValue)); 
   }
 
@@ -215,9 +160,7 @@ class DataPermanence {
    *
    */
   getValueEncoded (aKey) {
-    //console.log ("getValueEncoded ()");
     let decoded=permanence.getValue (aKey);
-    //console.log (decoded);
     return (window.atob(decoded));
   }   
 }

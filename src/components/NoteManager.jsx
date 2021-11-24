@@ -242,19 +242,6 @@ export default class NoteManager extends React.Component {
       score="";
     }
 
-    if (this.props.OLI) {
-      let scoreValue=parseInt (score);
-      let percentage=scoreValue/10;
-      //console.log ("score: " + score +", scoreValue: " + scoreValue + ", percentage: " + percentage);
-      this.props.OLI.sendScore ("percent",""+percentage);
-    }
-
-    /*
-    this.setState ({
-      value: score
-    });
-    */
-
     let newGraph=this.props.windowController.getGraphCopy ();
     
     newGraph.score=score;
@@ -282,26 +269,6 @@ export default class NoteManager extends React.Component {
     let gradeControls;
 
     let node=this.graphTools.getById (this.props.graph,this.props.node);
-
-    /*
-    console.log (this.props.graph);
-    console.log (this.props.node);
-    console.log (node);
-    */
-
-    if (node) {
-      if (node.id=="graph") {
-        if (node.score) {
-          if (this.props.OLI) {
-            if (this.props.OLI.isInInstructorMode()==true) {
-              gradeControls=<div><input className="smallinput" type="text" value={this.props.graph.score} onChange={this.onScoreChange}></input>out of 10</div>;              
-            }
-          } else {
-            gradeControls=<div><input className="smallinput" type="text" value={this.props.graph.score} onChange={this.onScoreChange}></input>out of 10</div>;
-          }
-        }
-      }
-    }
 
     if (!node) {
       notes=<div>Error: no notes list provided</div>;

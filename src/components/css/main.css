@@ -1,60 +1,6 @@
-*:focus {
-  outline: none;
-}
-
-* {
-   -moz-user-select: -moz-none;
-   -khtml-user-select: none;
-   -webkit-user-select: none;
-
-   /*
-     Introduced in IE 10.
-     See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/
-   */
-   -ms-user-select: none;
-   user-select: none;
-}
-
-html {
-  box-sizing: border-box;
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
-  
-  padding: 0px;
-  margin: 0px;
-  
-  overflow: hidden;
-
-  font-family: Verdana;
-  font-size: 10pt;
-}
-
-*, *:before, *:after {
-  box-sizing: inherit;
-}
-
-body {
-  margin: 0px;
-  padding: 0px;
-  
-  font-family: sans-serif;
-  overflow: hidden;
-
-  line-height: 2;
-}
-
-.main {
-  margin: 0px;
-  padding: 0px;
-  border: 0px solid red;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-}
-
 .maincontainer {
   margin: 0px;
-  padding: 10px;
+  padding: 0px;
   border: 0px solid red;
   height: 100%;
   overflow: hidden;

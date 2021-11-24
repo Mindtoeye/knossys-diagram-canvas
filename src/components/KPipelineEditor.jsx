@@ -5,6 +5,7 @@ import GraphTools from './utils/graphtools';
 import ToolbarTools from './utils/toolbartools';
 import DataPermanence from './utils/datapermanence';
 
+import KModuleTree from './KModuleTree';
 import WindowController from './windowtools/windowcontroller';
 import WindowBlocker from './WindowBlocker';
 import GraphController from './graphelements/graphcontroller';
@@ -34,7 +35,7 @@ import { GRAPHTYPES } from './utils/constants';
 /**
  * 
  */
-class KGraphEditor extends Component {
+class KPipelineEditor extends Component {
 
   /**
    *
@@ -46,7 +47,7 @@ class KGraphEditor extends Component {
 
     this.factory=props.factory;
 
-    this.feedbackChain=[];
+    //this.feedbackChain=[];
 
     this.dataTools=new DataTools ();
     this.graphTools=new GraphTools ();
@@ -55,11 +56,6 @@ class KGraphEditor extends Component {
 
     let blocker=false;
     let newGraph=this.graphTools.prepGraph (this.props.factory.newGraph ());
-
-    // We can call this method in the constructor because there is no server call dependency
-    if (this.permanence.getDataSource ()=="OLI") {
-      blocker=true;
-    }
 
     let compositeMenu=this.dataTools.deepCopy (menu);
 
@@ -94,7 +90,6 @@ class KGraphEditor extends Component {
       subEnabled: false,
       mouseBlocked: false,
       showAccessibility: false,
-      lastFeedback: "",
       windowSettings: {
         blocking: blocker
       },
@@ -108,7 +103,6 @@ class KGraphEditor extends Component {
         showNoteManager: false,
         showExportWindow: false,
         showImportWindow: false,
-        showFeedback: false,
         showNodeEditor: false,
         showPanelSettings: false
       },
@@ -206,11 +200,13 @@ class KGraphEditor extends Component {
       newGraph.id="graph";
       newGraph.type=GRAPHTYPES.GRAPH;
 
+      /*
       if (newGraph.feedbackhistory) {
         this.feedbackChain=this.dataTools.deepCopy (newGraph.feedbackhistory);
       } else {
         console.log ("Info: graph does not have any feedback history");
       }
+      */
     }
  
     if (newGraph==null) {
@@ -295,7 +291,7 @@ class KGraphEditor extends Component {
 
     //console.log ("Integrating feedback chain ...");
     //console.log (this.feedbackChain);
-    aNewGraph.feedbackhistory=this.dataTools.deepCopy (this.feedbackChain);
+    //aNewGraph.feedbackhistory=this.dataTools.deepCopy (this.feedbackChain);
 
     this.setState ({graph: aNewGraph},(e) => {
       if (aCallback) {
@@ -518,7 +514,7 @@ class KGraphEditor extends Component {
 
     this.refs ["grapheditor"].resetUndo((e) => {
       let newGraph={};
-      this.feedbackChain=[];
+      //this.feedbackChain=[];
 
       if (this.props.factory) {
         newGraph=this.graphTools.prepGraph (this.factory.newGraph ());
@@ -529,8 +525,8 @@ class KGraphEditor extends Component {
         newGraph=this.graphTools.prepGraph (newGraph);
       }
 
-      this.refs ["grapheditor"].setGraphData (newGraph,"New Graph",()=>{
-        this.refs ["grapheditor"].closeFeedbackWindow ();
+      this.refs ["grapheditor"].setGraphData (newGraph,"New Graph",() => {
+        //this.refs ["grapheditor"].closeFeedbackWindow ();
       });    
     });
   }  
@@ -730,30 +726,21 @@ class KGraphEditor extends Component {
   generateNewEdge () {
     console.log ("generateNewEdge ()");
 
-    /*
-    this.refs ["grapheditor"].setMode (INTMODE.SELECT);
-    this.setState ({mode: INTMODE.SELECT});
-
-    this.toggleSelect ();
-    */
-
     let newEdge=this.factory.newEdge ();
     newEdge.id="edge";
     newEdge.type=GRAPHTYPES.EDGE;
 
     return (newEdge);
-
-    //return (this.factory.newEdge ());
   }
 
   /**
    *
    */
+  /* 
   evaluateData (anAction) {
     console.log ("evaluateData ("+anAction+")");
 
     let feedback=this.generateFeedback ();
-    let OLI=this.permanence.getOLIActivity ();
 
     if (feedback) {
       if (feedback.length) {
@@ -764,10 +751,6 @@ class KGraphEditor extends Component {
 
             console.log ("Adding feedback object to chain ...");
             this.feedbackChain.push (feedbackObject);
-
-            if (OLI!=null) {  
-              OLI.logInCorrectStep (OLI.getQuestionId (),anAction,feedbackObject.details);
-            }
           }
         }
       } else {
@@ -777,27 +760,16 @@ class KGraphEditor extends Component {
       console.log ("Possible internal error: feedback is undefined");
     }
 
-    if (feedback) {
-      if (feedback.length==0) {
-        if (OLI!=null) {  
-          OLI.logCorrect (OLI.getQuestionId (),anAction);
-        }
-      }
-    } else {
-      if (OLI!=null) {  
-        OLI.logCorrect (OLI.getQuestionId (),anAction);
-      }
-    }
-
-
     this.setState({lastFeedback: feedback});
 
     return (feedback);
   }
+  */
 
   /**
    *
    */
+  /* 
   addFeedback (aFeedback,aType,aContent) {
     for (let i=0;i<aFeedback.length;i++) {
       let testFeedback=aFeedback [i];
@@ -814,10 +786,12 @@ class KGraphEditor extends Component {
     
     return (aFeedback);
   }
+  */
 
   /**
    *
    */
+  /* 
   generateFeedback (anAction) {
     console.log ("generateFeedback ()");
 
@@ -827,20 +801,6 @@ class KGraphEditor extends Component {
 
     // First check is to see if any conclusions are connected the wrong way to
     // premises
-
-    /*
-    if (this.graphTools.isADirectional (graph)==true) {
-      return ({ 
-        "issue": "adirectional", 
-        "details": "You can not connect these two nodes in that way"});
-    }
-
-    if (this.graphTools.isCyclic (graph)==true) {
-      return ({ 
-        "issue": "cyclic", 
-        "details": "You have a cyclic argument, please change your arguments"});
-    }
-    */
 
     for (let l=0;l<graph.edges.length;l++) {
       let edge=graph.edges [l];
@@ -864,12 +824,6 @@ class KGraphEditor extends Component {
               let target=this.graphTools.getEdgeById (graph,to);
               if (target!=null) {
                 //console.log ("The to id represents an edge");
-                /*
-                feedback.push ({
-                  "issue": "mismatch",
-                  "details": "You can only draw an arrow to another arrow if the arrow is coming from an objection or a group of objections"
-                });
-                */
                 feedback=this.addFeedback (feedback,"mismatch","You can only draw an arrow to another arrow if the arrow is coming from an objection or a group of objections");
                 return(feedback);
               }
@@ -895,12 +849,6 @@ class KGraphEditor extends Component {
               }
 
               if (found==false) {
-                /*
-                feedback.push ({
-                  "issue": "mismatch",
-                  "details": "You can only draw an arrow to another arrow if the arrow is coming from an objection or a group of objections"
-                });
-                */
                 feedback=this.addFeedback (feedback,"mismatch","You can only draw an arrow to another arrow if the arrow is coming from an objection or a group of objections");
                 return(feedback);
               }            
@@ -992,13 +940,6 @@ class KGraphEditor extends Component {
 
                 console.log ("Firing rule: " + ruleObject.feedback);
 
-                /*  
-                feedback.push ({
-                  "issue": "mismatch",
-                  "details": ruleObject.feedback
-                });
-                */
-
                 feedback=this.addFeedback (feedback,"mismatch",ruleObject.feedback);
               }
 
@@ -1017,12 +958,6 @@ class KGraphEditor extends Component {
                   }
                 }
                 if (found==false) {
-                  /*
-                  feedback.push ({
-                    "issue": "mismatch",
-                    "details": ruleObject.feedback
-                  });
-                  */
                   feedback=this.addFeedback (feedback,"mismatch",ruleObject.feedback);
                 }           
               }
@@ -1039,6 +974,7 @@ class KGraphEditor extends Component {
          
     return (feedback);
   }
+  */
 
   /**
    * https://www.w3schools.com/jsref/obj_keyboardevent.asp
@@ -1385,6 +1321,7 @@ class KGraphEditor extends Component {
           selected: null,
           globalSettings: updatedSettings
         },(e) => {
+          /*
           // Now that we've made potentially fundamental changes to the model, we should
           // re-evaluate all edges again
           let feedback=this.evaluateData ("changeType");
@@ -1394,6 +1331,7 @@ class KGraphEditor extends Component {
               this.refs ["grapheditor"].resetGraphUpdates();
             }
           }
+          */
         });
     });    
   }
@@ -1405,9 +1343,11 @@ class KGraphEditor extends Component {
     console.log ("importData ()");
 
     this.refs ["grapheditor"].setGraphData (JSON.parse (data),"Graph Imported",()=>{
+      /*
       if (this.state.graph.feedbackhistory) {
         this.feedbackChain=this.dataTools.deepCopy (this.state.graph.feedbackhistory);
       }
+      */
       var updatedSettings=this.dataTools.deepCopy (this.state.globalSettings);
       updatedSettings.showImportWindow=false;
       this.setState ({globalSettings : updatedSettings});
@@ -1423,14 +1363,14 @@ class KGraphEditor extends Component {
     let link;
     let unlink;
     let blocker;
-    let OLI=this.permanence.getOLIActivity ();
-  
     let accessibilityWindow;
 
+    /*
     if (this.state.showAccessibility==true) {
       let summary=this.graphTools.generateSummary (this.state.graph,this.state.lastFeedback);
       accessibilityWindow=<div id="accessibility" className="accessibility">{summary}</div>;
     }
+    */
 
     window.appBlocked=false;
 
@@ -1441,7 +1381,7 @@ class KGraphEditor extends Component {
     }
 
     if (this.state.globalSettings.showNoteManager==true) {            
-      win.push(<NoteManager key="nop-1" OLI={OLI} onWindowClose={this.onWindowClose.bind(this)} windowController={this.windowController} graph={this.state.graph} editNote={this.editNote} selectNote={this.selectNote} node={this.state.editNote} panelclass="" />); 
+      win.push(<NoteManager key="nop-1" onWindowClose={this.onWindowClose.bind(this)} windowController={this.windowController} graph={this.state.graph} editNote={this.editNote} selectNote={this.selectNote} node={this.state.editNote} panelclass="" />); 
     }
 
     // The dialog variable represents a single app-blocking window panel
@@ -1477,6 +1417,7 @@ class KGraphEditor extends Component {
     return (
       <div id="main" className="maincontainer">
         <ToolBar direction="vertical" ref="select" data={this.state.menu} handleIconClicked={this.handleIconClicked.bind()}></ToolBar>
+        <KModuleTree />
         <div id="diagramcontainer" className="diagram">
           <GraphEditor 
             ref="grapheditor"
@@ -1495,7 +1436,6 @@ class KGraphEditor extends Component {
             mode={this.state.mode}
             blockMouse={this.blockMouse}
 
-            showFeedback={this.state.globalSettings.showFeedback}
             showStack={this.state.globalSettings.showStack}
             showGrid={this.state.globalSettings.showGrid}
             showLabels={this.state.globalSettings.showLabels}
@@ -1514,7 +1454,6 @@ class KGraphEditor extends Component {
             setGraphData={this.setGraphData.bind(this)}
             generateNewNode={this.generateNewNode.bind(this)}
             generateNewEdge={this.generateNewEdge.bind(this)}
-            evaluateData={this.evaluateData.bind(this)}
             enableFunctions={this.enableFunctions.bind(this)}
             updateUndoRedo={this.updateUndoRedo.bind(this)}
             windowController={this.windowController}>
@@ -1529,4 +1468,4 @@ class KGraphEditor extends Component {
   }
 }
 
-export default KGraphEditor;
+export default KPipelineEditor;

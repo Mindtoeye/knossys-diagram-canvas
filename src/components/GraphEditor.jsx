@@ -17,10 +17,9 @@ import VisualGraphTools from './utils/visualgraphtools';
 import GraphTools from './utils/graphtools';
 import DataTools from './utils/datatools';
 import FontTools from './utils/fonttools';
-//import DataPermanence from './utils/datapermanence';
 
 import FontManager from './FontManager';
-import FeedbackManager from './FeedbackManager';
+//import FeedbackManager from './FeedbackManager';
 import WindowWrapper from './WindowWrapper';
 import MiniMap from './MiniMap';
 import UndoStackWindow from './UndoStackWindow';
@@ -32,10 +31,8 @@ import GraphDrawingTools from './graphelements/GraphDrawingTools';
 
 import './css/grapheditor.css';
 import './css/undostack.css';
-import './css/feedback.css';
+//import './css/feedback.css';
 
-import gridBackground from './css/images/grid-bg2.png';
-import blankBackground from './css/images/blank-bg.png';
 import zoomin from './css/images/zoom-in.png';
 import zoomout from './css/images/zoom-out.png';
 import reset from './css/images/reset.png';
@@ -127,8 +124,10 @@ export default class GraphEditor extends DoUndoComponent {
     this.toLocalX = this.toLocalX.bind(this);
     this.toLocalY = this.toLocalY.bind(this);
 
+    /*
     this.showFeedback = this.showFeedback.bind (this);
     this.showFeedbackString = this.showFeedbackString.bind (this);
+    */
 
     window.addEventListener('beforeunload', this.beforeunload.bind(this));
 
@@ -225,32 +224,38 @@ export default class GraphEditor extends DoUndoComponent {
   /**
    *
    */
+  /* 
   closeFeedbackWindow () {
     console.log ("closeFeedbackWindow ()");
     if (this.refs ["feedbackmanager"]) {
       this.refs ["feedbackmanager"].closeFeedbackWindow ();
     }
   }
+  */
 
   /**
    *
    */
+  /* 
   showFeedback (aMessage) {
     console.log ("showFeedback ()");
     if (this.refs ["feedbackmanager"]) {
       this.refs ["feedbackmanager"].showFeedback (aMessage);    
     }
   }
+  */
 
   /**
    *
    */
+  /*
   showFeedbackString (aMessage) {
     console.log ("showFeedbackString ()");
     if (this.refs ["feedbackmanager"]) {
       this.refs ["feedbackmanager"].showFeedbackString (aMessage);    
     }
-  }  
+  }
+  */ 
   
   /**
    * Bit of a roundabout way of doing things. We'll have to simplify this
@@ -1143,15 +1148,17 @@ export default class GraphEditor extends DoUndoComponent {
 
     console.log (newGraph);
 
-    this.setGraphData (newGraph,"Add Element",()=>{
+    this.setGraphData (newGraph,"Add Element",() => {
       if (this.props.setModeSelect) {
         this.props.setModeSelect();
       }
-
+ 
+      /*
       if (this.props.evaluateData) {
         let feedback=this.props.evaluateData ("addNode:"+anId+"");
         this.showFeedback (feedback);        
       }
+      */
     });
   }
 
@@ -1222,7 +1229,7 @@ export default class GraphEditor extends DoUndoComponent {
 
     if (this.props.settings.allowMultipleFrom==false) {
       if (this.graphTools.getEdgeByFromId (this.getGraphData(),aFrom.uuid)!=null) {     
-        this.showFeedbackString ("You can't create more than one link from a node");
+        //this.showFeedbackString ("You can't create more than one link from a node");
         this.resetGraphUpdates();
         return;
       }
@@ -1240,10 +1247,12 @@ export default class GraphEditor extends DoUndoComponent {
     newGraph.edges.push(newEdge);
 
     this.setGraphData (newGraph,"Add Edge",()=>{      
+      /*
       if (this.props.evaluateData) {
         let feedback=this.props.evaluateData ("addEdge:"+aFrom.id+":"+aTo.id);
         this.showFeedback (feedback);        
       }
+      */
             
       if (this.props.setModeSelect) {
         this.props.setModeSelect();
@@ -1353,14 +1362,14 @@ export default class GraphEditor extends DoUndoComponent {
 
     for (var i=0;i<selectionSet.length;i++) {
       if (this.graphTools.getGroupIdFromNode (this.getGraphData(),selectionSet [i].uuid)!=null) {
-        this.showFeedbackString ("One of the selected nodes is already part of a group");
+        //this.showFeedbackString ("One of the selected nodes is already part of a group");
         return;
       }
 
       // Let's leave this feature for now. It simply skips this check if the property doesn't exist
       if (selectionSet [i].hasOwnProperty ("groupable")==true) {
         if (selectionSet [i].groupable==false) {
-          this.showFeedbackString ("One of the selected nodes can't be grouped");
+          //this.showFeedbackString ("One of the selected nodes can't be grouped");
           return;        
         }
       }
@@ -1369,7 +1378,7 @@ export default class GraphEditor extends DoUndoComponent {
 
       if (this.state.groupings.length>0) {
         if (this.dataTools.isValidSet (this.state.groupings,groupingSet)==false) {
-          this.showFeedbackString ("The selected nodes can't be grouped together");
+          //this.showFeedbackString ("The selected nodes can't be grouped together");
           return;  
         } 
       }
@@ -1462,10 +1471,12 @@ export default class GraphEditor extends DoUndoComponent {
     }
 
     this.setGraphData (newGraph, "Create Group",() => {
+      /*
       if (this.props.evaluateData) {
         let feedback=this.props.evaluateData ("addGroup");
         this.showFeedback (feedback);        
       }
+      */
 
       this.calculateGroupsPanels ();
     });
@@ -1530,10 +1541,12 @@ export default class GraphEditor extends DoUndoComponent {
     }
 
     this.setGraphData (newGraph,"Delete Group",()=>{
+      /*
       if (this.props.evaluateData) {
         let feedback=this.props.evaluateData ("deleteGroup");
         this.showFeedback (feedback);        
       }
+      */
     });
   }
 
@@ -1615,10 +1628,12 @@ export default class GraphEditor extends DoUndoComponent {
       if (targetNode) {
         console.log ("Deleting node ...");
 
+        /*
         if (this.props.evaluateData) {
           let feedback=this.props.evaluateData ("deleteNode:"+targetNode.id);
           this.showFeedback (feedback);        
         }
+        */
 
         /*
         if (this.state.selected) {
@@ -1759,7 +1774,7 @@ export default class GraphEditor extends DoUndoComponent {
     let grid;
     let panels;
     let edges;
-    let feedback=<div/>;
+    //let feedback=<div/>;
     let mark;
     let stack;
     let fontmanager;
@@ -1781,9 +1796,11 @@ export default class GraphEditor extends DoUndoComponent {
 
     let statusbar=<div id="statusbar" className="statusbarfloat">{this.state.status}</div>;
 
+    /*
     if (this.props.showAccessibility==false) {
       feedback=<FeedbackManager ref="feedbackmanager" key="feedbackmanager" />;
     }
+    */
 
     markers=this.graphDrawingTools.createMarkers(this.state.nodeTypes);
 
@@ -1929,7 +1946,6 @@ export default class GraphEditor extends DoUndoComponent {
       {zoomOut}
       {zoomReset}
 
-      {feedback}
       {stack}
       {fontmanager}
       {minimap}

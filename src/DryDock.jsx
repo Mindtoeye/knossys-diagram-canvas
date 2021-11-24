@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import KDrydockWindow from './KDrydockWindow';
 
-import KGraphEditor from './components/KGraphEditor';
+import KPipelineEditor from './components/KPipelineEditor';
 import PipelineFactory from './PipelineFactory';
 
 import '../css/main.css';
@@ -50,7 +50,7 @@ class DryDock extends Component {
         </div>
         
         <KDrydockWindow x="50" y="50" width="884" height="700">
-          <KGraphEditor factory={this.pipelineFactory} />
+          <KPipelineEditor factory={this.pipelineFactory} />
         </KDrydockWindow>
 
       </div>        
