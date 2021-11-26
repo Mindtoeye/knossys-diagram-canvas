@@ -56,7 +56,7 @@ export class NoteIndicator extends React.Component {
     let notesIndicator;
 
     let noteIndicator="0";
-    let xfix="6";
+    let xfix="4";
 
     if (this.props.notes) {
      if (this.props.notes.length>9) {

@@ -1,5 +1,15 @@
 import React, { Component } from 'react';
 
+import { FaFile, FaFolder, FaFolderOpen } from 'react-icons/fa';
+import { MdAddLocation } from 'react-icons/md';
+import { RiStackshareLine, RiDragMove2Line } from 'react-icons/ri';
+import { GrUndo, GrRedo, GrCursor } from 'react-icons/gr';
+import { GiArrowCursor } from 'react-icons/gi';
+import { IoArrowUndoCircleOutline } from 'react-icons/io5';
+import { MdGridOn } from 'react-icons/md';
+import { CgNotes } from 'react-icons/cg';
+import { BiTrash, BiExport, BiImport } from 'react-icons/bi';
+
 import DataTools from './utils/datatools';
 import GraphTools from './utils/graphtools';
 import ToolbarTools from './utils/toolbartools';
@@ -20,6 +30,8 @@ import PanelSettings from './panels/PanelSettings';
 
 import TextEditor from './panels/TextEditor';
 import StringEditor from './panels/StringEditor';
+
+import { KTree, KButton, KToolbar, KToolbarItem } from '@knossys/knossys-ui-core';
 
 import './css/main.css';
 import './css/toolbar.css';
@@ -57,16 +69,6 @@ class KPipelineEditor extends Component {
     let blocker=false;
     let newGraph=this.graphTools.prepGraph (this.props.factory.newGraph ());
 
-    let compositeMenu=this.dataTools.deepCopy (menu);
-
-    let nodeMenu=this.toolbarTools.findById ("nodes",compositeMenu.items);
-    if (nodeMenu!=null) {
-      console.log ("Attaching sub menu ...");
-      nodeMenu.items=this.factory.getGraphSettings ().nodeTypes;
-    } else {
-      console.log ("Internal error, unable to find the target menu item to attach the reason submenu to")
-    }
-
     let gridValue=false;
     let labelValue = false;   
     let groupings=[];
@@ -80,7 +82,7 @@ class KPipelineEditor extends Component {
       graph: newGraph,
       editNode: null,
       editNote: null,
-      menu: compositeMenu,
+      menu: menu,
       nodeTypes: this.factory.getGraphSettings ().nodeTypes,
       groupings: groupings,
       rules: this.factory.getGraphSettings ().rules,
@@ -120,10 +122,11 @@ class KPipelineEditor extends Component {
     };
       
     this.handleIconClicked = this.handleIconClicked.bind(this);
+    this.onToolbarItemClick = this.onToolbarItemClick.bind(this);
     this.exportGraph = this.exportGraph.bind(this);
-    this.toggleSelect = this.toggleSelect.bind(this);
-    this.enableButtons = this.enableButtons.bind(this);
-    this.disableButtons = this.disableButtons.bind(this);
+    //this.toggleSelect = this.toggleSelect.bind(this);
+    //this.enableButtons = this.enableButtons.bind(this);
+    //this.disableButtons = this.disableButtons.bind(this);
     this.blockMouse = this.blockMouse.bind(this);
   
     this.editNode = this.editNode.bind(this);
@@ -263,8 +266,8 @@ class KPipelineEditor extends Component {
    *
    */
   componentDidMount () {
-    this.toggleSelect ();
-    this.disableButtons ();
+    //this.toggleSelect ();
+    //this.disableButtons ();
 
     document.addEventListener("keyup", this.onKeyUp.bind(this));
     document.addEventListener("keydown", this.onKeyDown.bind(this));
@@ -277,9 +280,11 @@ class KPipelineEditor extends Component {
   /**
    *
    */
+  /* 
   toggleSelect () {
     this.refs ["select"].toggleDefaultItem ("1");
   }
+  */
 
   /**
    *
@@ -359,24 +364,6 @@ class KPipelineEditor extends Component {
       this.setState ({mode: INTMODE.PAN});
     }    
 
-    if (e=="2") {
-      console.log ("Operation:AddArgumentation");
-      this.refs ["grapheditor"].setMode (INTMODE.LINK_BLACK);
-      this.setState ({mode: INTMODE.LINK_BLACK});
-    }
-
-    if (e=="3") {
-      console.log ("Operation:AddRefutation");
-      this.refs ["grapheditor"].setMode (INTMODE.LINK_RED);
-      this.setState ({mode: INTMODE.LINK_RED});
-    }
-
-    if (e=="35") {
-      console.log ("Operation:AddReply");
-      this.refs ["grapheditor"].setMode (INTMODE.LINK_BLUE);
-      this.setState ({mode: INTMODE.LINK_BLUE});
-    }
-
     //>--------------------------------------------------------
 
     if (e=="5") {
@@ -396,11 +383,6 @@ class KPipelineEditor extends Component {
 
     //>--------------------------------------------------------    
     
-    if (e=="8") {
-      console.log ("Operation:ToggleGrid");
-      this.showGrid ();
-    }
-
     if (e=="23") {
       console.log ("Operation:ToggleLabels");
       this.showLabels ();
@@ -461,36 +443,6 @@ class KPipelineEditor extends Component {
         this.newDocument ();
       }
     }
-
-    if (e=="module") { 
-      console.log ("Operation:createModule");
-      this.refs ["grapheditor"].addNode (this.dataTools.getRandomInt(5,50),this.dataTools.getRandomInt(5,50),"Module", "module");
-    }
-
-    if (e=="premise") { 
-      console.log ("Operation:createPremise");
-      this.refs ["grapheditor"].addNode (this.dataTools.getRandomInt(5,50),this.dataTools.getRandomInt(5,50),"Module", "module");
-    }
-
-    if (e=="premise") { 
-      console.log ("Operation:createPremise");
-      this.refs ["grapheditor"].addNode (this.dataTools.getRandomInt(5,50),this.dataTools.getRandomInt(5,50),"Premise", "premise");
-    }    
-
-    if (e=="conclusion") { 
-      console.log ("Operation:createConclusion");
-      this.refs ["grapheditor"].addNode (this.dataTools.getRandomInt(5,50),this.dataTools.getRandomInt(5,50),"Conclusion", "conclusion");
-    }
-
-    if (e=="subconclusion") { 
-      console.log ("Operation:createSubConclusion");
-      this.refs ["grapheditor"].addNode (this.dataTools.getRandomInt(5,50),this.dataTools.getRandomInt(5,50),"Sub-Conclusion", "subconclusion");
-    }
-    
-    if (e=="objection") { 
-      console.log ("Operation:createObjection");
-      this.refs ["grapheditor"].addNode (this.dataTools.getRandomInt(5,50),this.dataTools.getRandomInt(5,50),"Objection", "objection");
-    }
     
     if (e=="reply") { 
       console.log ("Operation:createReply");
@@ -504,6 +456,36 @@ class KPipelineEditor extends Component {
         this.setState ({showAccessibility: false});
       }
     }      
+  }
+
+  /**
+   *
+   */
+  onToolbarItemClick (anItem) {
+
+    if (anItem==1) {
+      this.newModule ();
+    }
+
+    if (anItem=="grid") {
+      this.showGrid ();
+    }
+
+    if (anItem=="undo") {
+      this.refs ["grapheditor"].doUndo (); 
+    }
+
+    if (anItem=="redo") {
+      this.refs ["grapheditor"].doRedo (); 
+    }        
+  }
+
+  /**
+   *
+   */
+  newModule () {
+    console.log ("newModule");
+    this.refs ["grapheditor"].addNode (this.dataTools.getRandomInt(5,50),this.dataTools.getRandomInt(5,50),"Module", "module");
   }
 
   /**
@@ -701,10 +683,12 @@ class KPipelineEditor extends Component {
    *
    */
   setModeSelect () {
+    /*
     this.refs ["grapheditor"].setMode (INTMODE.SELECT);
     this.setState ({mode: INTMODE.SELECT});
 
     this.toggleSelect ();
+    */
   }
 
   /**
@@ -1065,17 +1049,21 @@ class KPipelineEditor extends Component {
   /**
    *
    */
+  /* 
   disableButtons () {
     this.refs ["select"].enableItem ("5,6,7",false);
     this.refs ["select"].enableItem ("undo,redo",false);
   }
+  */
 
   /**
    *
    */
+  /* 
   enableButtons () {
     this.refs ["select"].enableItem ("5,6,7",true);
   }
+  */
 
   /**
    *
@@ -1094,13 +1082,15 @@ class KPipelineEditor extends Component {
   enableFunctions (aSelected) {
     //console.log ("enableFunctions ("+aSelected+")");
 
+    /*
     if (aSelected==true) {
       this.enableButtons (aSelected);
     }
 
     if (aSelected==false) {
       this.disableButtons (aSelected);
-    }    
+    }
+    */   
   }
 
   /**
@@ -1109,11 +1099,13 @@ class KPipelineEditor extends Component {
   updateUndoRedo () {
     console.log ("updateUndoRedo ("+this.refs ["grapheditor"].getDoUndoStack ().length+")");
 
+    /*
     if (this.refs ["grapheditor"].getDoUndoStack ().length>0) {
       this.refs ["select"].enableItem ("undo,redo",true);
     } else {
       this.refs ["select"].enableItem ("undo,redo",false);
     }
+    */
   }
 
   /**
@@ -1372,6 +1364,20 @@ class KPipelineEditor extends Component {
     }
     */
 
+    //toolbar=<ToolBar direction="vertical" ref="select" data={this.state.menu} handleIconClicked={this.handleIconClicked.bind()}></ToolBar>;
+    toolbar=<KToolbar style={{fontSize: "15pt", borderRight: "1px solid #545454"}} direction={KToolbar.DIRECTION_VERTICAL}>    
+      <KToolbarItem onClick={(e) => this.onToolbarItemClick (5)}><GiArrowCursor /></KToolbarItem>
+      <KToolbarItem onClick={(e) => this.onToolbarItemClick (5)}><RiDragMove2Line /></KToolbarItem>      
+      <KToolbarItem onClick={(e) => this.onToolbarItemClick (5)}><CgNotes /></KToolbarItem>
+      <KToolbarItem onClick={(e) => this.onToolbarItemClick ("grid")}><MdGridOn /></KToolbarItem>
+      <KToolbarItem onClick={(e) => this.onToolbarItemClick (5)}><IoArrowUndoCircleOutline /></KToolbarItem>
+      <KToolbarItem onClick={(e) => this.onToolbarItemClick ("undo")}><GrUndo /></KToolbarItem>
+      <KToolbarItem onClick={(e) => this.onToolbarItemClick ("redo")}><GrRedo /></KToolbarItem>
+      <KToolbarItem onClick={(e) => this.onToolbarItemClick (8)}><BiTrash /></KToolbarItem>
+      <KToolbarItem onClick={(e) => this.onToolbarItemClick (8)}><BiImport /></KToolbarItem>
+      <KToolbarItem onClick={(e) => this.onToolbarItemClick (8)}><BiExport /></KToolbarItem>
+    </KToolbar>;
+
     window.appBlocked=false;
 
     blocker=<WindowBlocker windowSettings={this.state.windowSettings} />;
@@ -1416,8 +1422,8 @@ class KPipelineEditor extends Component {
 
     return (
       <div id="main" className="maincontainer">
-        <ToolBar direction="vertical" ref="select" data={this.state.menu} handleIconClicked={this.handleIconClicked.bind()}></ToolBar>
-        <KModuleTree />
+        {toolbar}
+        <KModuleTree onToolbarItemClick={this.onToolbarItemClick}/>
         <div id="diagramcontainer" className="diagram">
           <GraphEditor 
             ref="grapheditor"

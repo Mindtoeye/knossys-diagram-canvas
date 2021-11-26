@@ -18,6 +18,7 @@ import './css/main.css';
 import './css/toolbar.css';
 import './css/panelwindow.css';
 import './css/notes.css';
+import './css/bubbles.css';
 
 import resizeImage from './css/images/resize.png';
 
@@ -296,7 +297,7 @@ export default class NoteManager extends React.Component {
         showstatus={true} 
         panelclass={this.props.panelclass} 
         title={notesLabel} toolbar={toolbar} 
-        style={{width: "auto", minWidth: "180px", minHeight: "250px", left: "50px", top: "50px"}}>
+        style={{width: "auto", minWidth: "180px", minHeight: "250px", left: "50px", top: "50px", maxHeight: "350px"}}>
         {notes}
       </WindowWrapper>);
   }

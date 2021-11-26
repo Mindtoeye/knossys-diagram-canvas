@@ -1,23 +1,24 @@
   /* CSS talk bubble */
   .talk-bubble {
-    margin: 20px;
+    margin: 4px;
+    margin-left: 20px;
     display: inline-block;
     position: relative;
-    /*width: 200px;*/
-    /*height: auto;*/
-    /*min-height: 78px;*/
+    min-height: 78px;
     background-color: lightyellow;
+    color: black;
   }
 
   /* CSS talk bubble */
   .talk-bubble-selected {
-    margin: 20px;
+    margin: 4px;
+    margin-left: 20px;
     display: inline-block;
     position: relative;
-    /*width: 200px;*/
     height: auto;
-    /*min-height: 78px;*/
+    min-height: 78px;
     background-color: gold;
+    color: black;    
   }  
 
   .border{

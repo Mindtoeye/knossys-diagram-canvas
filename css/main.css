@@ -42,7 +42,7 @@ body {
   font-family: sans-serif;
   overflow: hidden;
 
-  line-height: 2;
+  /*line-height: 2;*/
 
   background: black;  
 }

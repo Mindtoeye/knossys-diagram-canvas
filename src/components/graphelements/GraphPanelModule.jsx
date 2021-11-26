@@ -141,6 +141,7 @@ class GraphPanelModule extends React.Component {
     let colorDefault=COLORSDARK.NODE_DEFAULT;
     let colorSelected=COLORSDARK.NODE_SELECTED;
 
+    /*
     if (this.props.nodeTypes) {
       for (let i=0;i<this.props.nodeTypes.length;i++){
         let type=this.props.nodeTypes [i];
@@ -155,6 +156,7 @@ class GraphPanelModule extends React.Component {
         }
       }
     }
+    */
     
     if (this.props.panel.selected==true) {
       color=colorSelected;
@@ -238,12 +240,14 @@ class GraphPanelModule extends React.Component {
           rx="2"
           x="2" 
           y="2" 
+          rx="3" 
+          ry="3"
           width={this.props.panel.width-4} 
           height={20} 
           style={{fill:"rgb(0,0,0)", fillOpacity: "0.7", pointerEvents: "all", cursor: "pointer"}}>
          </rect>
         <text 
-          x="4" 
+          x="8" 
           y="16" 
           fontWeight="bold" 
           fontFamily="Arial" 

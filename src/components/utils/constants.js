@@ -46,14 +46,14 @@ export const GRAPHICSCONSTS = {
 }
 
 export const COLORS = {
-  NODE_DEFAULT: "rgb(255,255,255)",
+  NODE_DEFAULT: "#838383c9",
   NODE_SELECTED: "rgb(100,100,100)",
   EDGE_DEFAULT: "rgb(0,0,0)",
   EDGE_SELECTED: "rgb(100,100,100)",  
 }
 
 export const COLORSDARK = {
-  NODE_DEFAULT: "rgb(131,131,131)",
+  NODE_DEFAULT: "#83838370",
   NODE_SELECTED: "rgb(100,100,100)",
   EDGE_DEFAULT: "rgb(0,0,0)",
   EDGE_SELECTED: "rgb(100,100,100)",  

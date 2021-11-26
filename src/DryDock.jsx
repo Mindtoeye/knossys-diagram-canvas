@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 
 import KDrydockWindow from './KDrydockWindow';
 
+import { WindowManager, ApplicationManager } from '@knossys/knossys-window-manager';
+
 import KPipelineEditor from './components/KPipelineEditor';
 import PipelineFactory from './PipelineFactory';
 
@@ -19,39 +21,51 @@ class DryDock extends Component {
   constructor(props) {
     super(props);
 
-    this.pipelineFactory=new PipelineFactory ();
+    this.state = {
+      globalSettings: {}
+    }       
 
-    this.onKeyDown=this.onKeyDown.bind (this);
+    this.appManager=new ApplicationManager ();
+
+    this.pipelineFactory=new PipelineFactory ();
+    
+    this.updateWindowStack=this.updateWindowStack.bind (this);    
   }
 
   /**
    *
    */
-  onKeyDown (e) {
-    console.log ("onKeyDown ("+e.keyCode+")");
+  componentDidMount () {
+    this.appManager.addApplication ({
+      title: "Knossys Analysis Pipeline Editor",
+      type: "window",
+      width: 400,
+      height: 300,
+      window: <KPipelineEditor factory={this.pipelineFactory} />
+    });
 
-    // 'l'
-    if(e.keyCode==65) {
-      console.log ("Adding node");
-      return;
-    }    
-  }  
+    this.updateWindowStack ();
+  }
+
+  /**
+   * This will go into the app manager
+   */
+  updateWindowStack () {
+    this.setState(this.state);
+  }    
+
   /**
    *
    */
   render() {
     return (
-      <div tabIndex="0" className="fauxdesktop" onKeyDown={this.onKeyDown}>
+      <div tabIndex="0" className="fauxdesktop knossys-dark">
         <div className="fauxwm">
-
-        <div className="drydockpanel">
-          <p>Use the following keys to show and test the various graph editor functions</p>
-          <p>  a: Add node</p>
-        </div>
         
-        <KDrydockWindow x="50" y="50" width="884" height="700">
-          <KPipelineEditor factory={this.pipelineFactory} />
-        </KDrydockWindow>
+        <WindowManager 
+          settings={this.state.globalSettings}
+          appManager={this.appManager}>
+        </WindowManager>        
 
       </div>        
       </div>

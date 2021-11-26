@@ -117,13 +117,6 @@ export const menu = {
       image: blackArrowImage,
       group: "select"
     },{
-      type: "menu",
-      id: "nodes",
-      title: "Add Reason",
-      image: addImage,
-      items: [],      
-      group: "select"
-    },{
       type: "divider"
     },{
       type: "button",
