@@ -77,7 +77,7 @@ class DataPermanence {
    *
    */
   setValue (aKey,aValue) {
-    console.log ("setValue ("+aKey+","+aValue+")");
+    //console.log ("setValue ("+aKey+","+aValue+")");
 
     cookieJar [aKey]=aValue;
 

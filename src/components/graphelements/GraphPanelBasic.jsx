@@ -1,12 +1,11 @@
 import React from 'react';
 
-import FontTools from '../utils/fonttools';
 import DataTools from '../utils/datatools';
 import DOMTools from '../utils/domtools'; 
 
 import NoteIndicator from './NoteIndicator';
 
-import {Editor, EditorState, convertFromRaw} from 'draft-js';
+import { Editor, EditorState, convertFromRaw } from 'draft-js';
 
 import { COLORS } from '../utils/constants';
 
@@ -34,7 +33,6 @@ class GraphPanelBasic extends React.Component {
 
     this.k = 1;
 
-    this.fontTools = new FontTools ();
     this.dataTools = new DataTools ();
     this.DOMTools = new DOMTools ();
 

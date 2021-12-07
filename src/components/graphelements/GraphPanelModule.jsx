@@ -9,6 +9,8 @@ import { COLORSDARK } from '../utils/constants';
 import '../css/grapheditor.css';
 import '../css/panelwindow.css';
 
+import resizeImage from '../css/images/resize.png';
+
 /**
  * 
  */
@@ -33,19 +35,40 @@ class GraphPanelModule extends React.Component {
     this.dataTools = new DataTools ();
 
     this.onHandleDown = this.onHandleDown.bind(this);
+    this.onConnectorDown = this.onConnectorDown.bind(this);
   }
 
   /**
    * 
    */ 
-  onHandleDown (e,aHandle,isDown) {
+  onHandleDown (e,isDown) {
     console.log ("onHandleDown ()");
 
     e.preventDefault();
     e.stopPropagation();
 
+    // This code mimics the alternative resize method using handles by pretending that
+    // the resize gripper is one of the handles
     if (this.props.onHandleDown) {
-      this.props.onHandleDown (e,aHandle,isDown);
+      this.props.onHandleDown (e,{ 
+        key: "handler-8",
+        id: 8, 
+        selected: true},
+      isDown);
+    }
+  }
+
+  /**
+   * 
+   */ 
+  onConnectorDown (e,aConnector,isDown) {
+    console.log ("onConnectorDown ()");
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (this.props.onConnectorDown) {
+      this.props.onConnectorDown (e,aConnector,isDown);
     }
   }
 
@@ -96,6 +119,14 @@ class GraphPanelModule extends React.Component {
    * 
    */
   generateConnectors (aPanel) {
+    if ((aPanel.inputs.length==0) && (aPanel.outputs.length==0)) {
+      return (<foreignObject x="4" y="26" width={aPanel.width-8} height={aPanel.height-30} >
+        <div className="panel-error" xmlns="http://www.w3.org/1999/xhtml">
+        Error: no inputs or outputs defined
+        </div>
+      </foreignObject>);
+    }
+
     let connectors=[];
     let connectorKey=0;
 
@@ -103,7 +134,7 @@ class GraphPanelModule extends React.Component {
       let yOffset=42;
       for (let i=0;i<this.props.panel.inputs.length;i++) {
         var inputObject=this.props.panel.inputs [i];
-        connectors.push(<circle key={"conn-circle-"+connectorKey} cx="0" cy={yOffset} r="6" fill="#cccccc" stroke="#444444" />);
+        connectors.push(<circle onMouseDown={(e) => this.onConnectorDown (e,inputObject,true)} onMouseUp={(e) => this.onConnectorDown (e,inputObject,false)} key={"conn-circle-"+connectorKey} cx="0" cy={yOffset} r="6" fill="#cccccc" stroke="#444444" />);
         connectors.push(<text key={"conn-text-"+connectorKey} x="10" y={yOffset+3} fontFamily="Arial" fontSize="10" className="pointerfix" style={{fill: "white", pointerEvents: "all", cursor: "pointer"}}>{inputObject.name}</text>);
         yOffset+=20;
         connectorKey++;
@@ -114,7 +145,7 @@ class GraphPanelModule extends React.Component {
       let yOffset=42;
       for (let i=0;i<this.props.panel.outputs.length;i++) {
         var outputObject=this.props.panel.outputs [i];
-        connectors.push(<circle key={"conn-circle-"+connectorKey} cx={this.props.panel.width} cy={yOffset} r="6" fill="#cccccc" stroke="#444444" />);
+        connectors.push(<circle onMouseDown={(e) => this.onConnectorDown (e,outputObject,true)} onMouseUp={(e) => this.onConnectorDown (e,outputObject,false)} key={"conn-circle-"+connectorKey} cx={this.props.panel.width} cy={yOffset} r="6" fill="#cccccc" stroke="#444444" />);
         connectors.push(<text key={"conn-text-"+connectorKey} x={this.props.panel.width-50} y={yOffset+3} fontFamily="Arial" fontSize="10" className="pointerfix" style={{fill: "white", pointerEvents: "all", cursor: "pointer"}}>{outputObject.name}</text>);
         yOffset+=20;
         connectorKey++;
@@ -127,47 +158,52 @@ class GraphPanelModule extends React.Component {
   /**
    * 
    */
+  generateSettingsIcon (aPanel) {
+    return (<svg x={aPanel.width-40} y={4} width="16" height="16">
+      <rect 
+        x="0" 
+        y="0" 
+        width={16}
+        height={16} 
+        style={{fill:"rgb(255,255,255)", fillOpacity: "0.7", pointerEvents: "all", cursor: "pointer"}}
+        onMouseDown={this.defaultMouseDown.bind (this)}
+        onMouseUp={this.settingsMouseUp.bind (this)}>
+       </rect>
+      <path 
+         transform="translate(-2,-2) scale(0.8 0.8)"
+         className="mouseover"
+         fill="#666666"
+         onMouseDown={this.defaultMouseDown.bind (this)}
+         onMouseUp={this.settingsMouseUp.bind (this)}
+         d="M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm7-7H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-1.75 9c0 .23-.02.46-.05.68l1.48 1.16c.13.11.17.3.08.45l-1.4 2.42c-.09.15-.27.21-.43.15l-1.74-.7c-.36.28-.76.51-1.18.69l-.26 1.85c-.03.17-.18.3-.35.3h-2.8c-.17 0-.32-.13-.35-.29l-.26-1.85c-.43-.18-.82-.41-1.18-.69l-1.74.7c-.16.06-.34 0-.43-.15l-1.4-2.42c-.09-.15-.05-.34.08-.45l1.48-1.16c-.03-.23-.05-.46-.05-.69 0-.23.02-.46.05-.68l-1.48-1.16c-.13-.11-.17-.3-.08-.45l1.4-2.42c.09-.15.27-.21.43-.15l1.74.7c.36-.28.76-.51 1.18-.69l.26-1.85c.03-.17.18-.3.35-.3h2.8c.17 0 .32.13.35.29l.26 1.85c.43.18.82.41 1.18.69l1.74-.7c.16-.06.34 0 .43.15l1.4 2.42c.09.15.05.34-.08.45l-1.48 1.16c.03.23.05.46.05.69z" 
+        />;
+    </svg>);
+  }
+
+  /**
+   * https://yoksel.github.io/svg-filters/#/
+   */
   render() {
+    let title="Undefined";
     let base;
-    let connectors;
+    let connectors;    
+    let resizer;
     let handles=[];
     let fontStyle=this.props.fontStyle;
     let color=COLORSDARK.NODE_DEFAULT;
     let style;
-    let dropdown;
     let nodeClass;
     let notesIcon;
+    let settingsIcon;
     
     let colorDefault=COLORSDARK.NODE_DEFAULT;
     let colorSelected=COLORSDARK.NODE_SELECTED;
-
-    /*
-    if (this.props.nodeTypes) {
-      for (let i=0;i<this.props.nodeTypes.length;i++){
-        let type=this.props.nodeTypes [i];
-        if (type.id==this.props.panel.id) {
-          if (type.color!="default") {
-            colorDefault=type.color;
-          }
-
-          if (type.selected!="default") {
-            colorSelected=type.selected;
-          }
-        }
-      }
-    }
-    */
     
     if (this.props.panel.selected==true) {
       color=colorSelected;
 
       if (this.props.panel.resizing==true) {
-        for (let i=0;i<this.props.panel.handles.length;i++) {
-          let handle=this.props.panel.handles [i];
-          let handleStyle=this.dataTools.deepCopy (handle.style);
-
-          handles.push (<rect key={handle.key} x={handle.x} y={handle.y} width={handle.width} height={handle.height} className="handle pointerall" style={handleStyle} onMouseDown={(e) => this.onHandleDown (e,handle,true)} onMouseUp={(e) => this.onHandleDown (e,handle,false)} />);
-        }
+        resizer=<image href={resizeImage} x={(this.props.panel.width-16)} y={(this.props.panel.height-16)} height="16" width="16" style={{cursor: "nwse-resize", pointerEvents: "all"}} onMouseDown={(e) => this.onHandleDown (e,true)} onMouseUp={(e) => this.onHandleDown (e,false)} />;
       }
     } else {
       color = colorDefault;
@@ -191,46 +227,13 @@ class GraphPanelModule extends React.Component {
        className={nodeClass}>
     </rect>     
     
-    let title="Undefined";
-
     if (this.props.panel.name) {
       title=this.props.panel.name;
     }
 
-    let blockWidth=""+(this.props.panel.width-24)+"";
-    let settingsIcon;
+    settingsIcon=this.generateSettingsIcon (this.props.panel);
 
-    settingsIcon=<svg x={this.props.panel.width-40} y={4} width="16" height="16">
-      <rect 
-        x="0" 
-        y="0" 
-        width={16}
-        height={16} 
-        style={{fill:"rgb(255,255,255)", fillOpacity: "0.7", pointerEvents: "all", cursor: "pointer"}}
-        onMouseDown={this.defaultMouseDown.bind (this)}
-        onMouseUp={this.settingsMouseUp.bind (this)}>
-       </rect>
-      <path 
-         transform="translate(-2,-2) scale(0.8 0.8)"
-         className="mouseover"
-         fill="#666666"
-         onMouseDown={this.defaultMouseDown.bind (this)}
-         onMouseUp={this.settingsMouseUp.bind (this)}
-         d="M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm7-7H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-1.75 9c0 .23-.02.46-.05.68l1.48 1.16c.13.11.17.3.08.45l-1.4 2.42c-.09.15-.27.21-.43.15l-1.74-.7c-.36.28-.76.51-1.18.69l-.26 1.85c-.03.17-.18.3-.35.3h-2.8c-.17 0-.32-.13-.35-.29l-.26-1.85c-.43-.18-.82-.41-1.18-.69l-1.74.7c-.16.06-.34 0-.43-.15l-1.4-2.42c-.09-.15-.05-.34.08-.45l1.48-1.16c-.03-.23-.05-.46-.05-.69 0-.23.02-.46.05-.68l-1.48-1.16c-.13-.11-.17-.3-.08-.45l1.4-2.42c.09-.15.27-.21.43-.15l1.74.7c.36-.28.76-.51 1.18-.69l.26-1.85c.03-.17.18-.3.35-.3h2.8c.17 0 .32.13.35.29l.26 1.85c.43.18.82.41 1.18.69l1.74-.7c.16-.06.34 0 .43.15l1.4 2.42c.09.15.05.34-.08.45l-1.48 1.16c.03.23.05.46.05.69z" 
-        />;
-    </svg> 
-
-    // https://yoksel.github.io/svg-filters/#/
-
-    if ((this.props.panel.inputs.length==0) && (this.props.panel.outputs.length==0)) {
-      connectors=<foreignObject x="4" y="26" width={this.props.panel.width-8} height={this.props.panel.height-30} >
-          <div className="panel-error" xmlns="http://www.w3.org/1999/xhtml">
-          Error: no inputs or outputs defined
-          </div>
-        </foreignObject>          
-    } else {
-      connectors=this.generateConnectors (this.props.panel);
-    }
+    connectors=this.generateConnectors (this.props.panel);
 
     return (
       <svg className="pointerfix" key={this.k++} x={this.props.panel.x} y={this.props.panel.y} width={this.props.panel.width} height={this.props.panel.height} id={"group"+this.props.panel.name} filter="url(#dropshadow)">
@@ -259,8 +262,8 @@ class GraphPanelModule extends React.Component {
         <NoteIndicator notes={this.props.panel.notes} x={(this.props.panel.width-20)} y="4" editNotes={this.onNotes.bind (this)}/>
         {settingsIcon}
         {connectors}
+        {resizer}
         {handles}
-        {dropdown}
       </svg>);
   }  
 }

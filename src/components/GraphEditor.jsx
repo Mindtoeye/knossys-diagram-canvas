@@ -16,10 +16,7 @@ import DoUndoComponent from './DoUndoComponent';
 import VisualGraphTools from './utils/visualgraphtools';
 import GraphTools from './utils/graphtools';
 import DataTools from './utils/datatools';
-import FontTools from './utils/fonttools';
 
-import FontManager from './FontManager';
-//import FeedbackManager from './FeedbackManager';
 import WindowWrapper from './WindowWrapper';
 import MiniMap from './MiniMap';
 import UndoStackWindow from './UndoStackWindow';
@@ -31,7 +28,6 @@ import GraphDrawingTools from './graphelements/GraphDrawingTools';
 
 import './css/grapheditor.css';
 import './css/undostack.css';
-//import './css/feedback.css';
 
 import zoomin from './css/images/zoom-in.png';
 import zoomout from './css/images/zoom-out.png';
@@ -67,7 +63,6 @@ export default class GraphEditor extends DoUndoComponent {
 
     this.edgeIndex=0;
     this.dataTools=new DataTools ();
-    this.fontTools=new FontTools ();
     this.visualGraphTools=new VisualGraphTools();
     this.graphTools=new GraphTools ();  
     this.graphDrawingTools=new GraphDrawingTools ();
@@ -91,7 +86,6 @@ export default class GraphEditor extends DoUndoComponent {
       leftDown: false,
       leftBlocked: false,
       rightBlocked: false,
-      fontStyle: this.fontTools.fontGetDefaultStyle (),
       status: "",
       from: null,
       to: null,
@@ -1265,14 +1259,6 @@ export default class GraphEditor extends DoUndoComponent {
   /**
    *
    */
-  applyFontChange (aStyle) {
-    console.log ("applyFontChange ()");
-    this.setState ({fontStyle: aStyle});
-  }
-
-  /**
-   *
-   */
   resetGraphUpdates () {
     console.log ("resetGraphUpdates ()");
 
@@ -1796,25 +1782,7 @@ export default class GraphEditor extends DoUndoComponent {
 
     let statusbar=<div id="statusbar" className="statusbarfloat">{this.state.status}</div>;
 
-    /*
-    if (this.props.showAccessibility==false) {
-      feedback=<FeedbackManager ref="feedbackmanager" key="feedbackmanager" />;
-    }
-    */
-
     markers=this.graphDrawingTools.createMarkers(this.state.nodeTypes);
-
-    /*
-    if (this.state.showNoteEditor==true) {
-      noteeditor=<TextEditor windowController={this.props.windowController} title="Text Editor" text={this.state.editText}/>;
-    }
-    */
-    
-    if (this.props.showFontPanel) {
-      if (this.props.showFontPanel==true) {
-        fontmanager=<FontManager windowController={this.props.windowController} panelclass="fontclass" applyFontChange={this.applyFontChange.bind(this)} />;
-      }
-    }
 
     if (this.props.showStack) {
       if(this.props.showStack==true) {

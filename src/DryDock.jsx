@@ -33,14 +33,14 @@ class DryDock extends Component {
   }
 
   /**
-   *
+   * 
    */
   componentDidMount () {
     this.appManager.addApplication ({
       title: "Knossys Analysis Pipeline Editor",
       type: "window",
-      width: 400,
-      height: 300,
+      width: 929,
+      height: 662,
       window: <KPipelineEditor factory={this.pipelineFactory} />
     });
 
