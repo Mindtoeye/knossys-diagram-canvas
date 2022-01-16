@@ -11,5 +11,5 @@ if [ ! -d "node_modules" ]; then
   exit
 fi
 
-export NODE_OPTIONS=--openssl-legacy-provider
+#export NODE_OPTIONS=--openssl-legacy-provider
 npm run start
