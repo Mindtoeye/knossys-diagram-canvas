@@ -3,12 +3,13 @@ import React, { Component } from 'react';
 import { FaFile, FaFolder, FaFolderOpen } from 'react-icons/fa';
 import { MdAddLocation } from 'react-icons/md';
 import { RiStackshareLine, RiDragMove2Line } from 'react-icons/ri';
-import { GrUndo, GrRedo, GrCursor } from 'react-icons/gr';
+import { GrUndo, GrRedo, GrCursor, GrShareOption } from 'react-icons/gr';
 import { GiArrowCursor } from 'react-icons/gi';
 import { IoArrowUndoCircleOutline } from 'react-icons/io5';
 import { MdGridOn } from 'react-icons/md';
 import { CgNotes } from 'react-icons/cg';
 import { BiTrash, BiExport, BiImport } from 'react-icons/bi';
+import { TbPlugConnected } from 'react-icons/tb';
 
 import DataTools from './utils/datatools';
 import GraphTools from './utils/graphtools';
@@ -718,249 +719,6 @@ class KPipelineEditor extends Component {
   }
 
   /**
-   *
-   */
-  /* 
-  evaluateData (anAction) {
-    console.log ("evaluateData ("+anAction+")");
-
-    let feedback=this.generateFeedback ();
-
-    if (feedback) {
-      if (feedback.length) {
-        if (feedback.length>0) {
-
-          for (let i=0;i<feedback.length;i++) {
-            let feedbackObject=feedback [i];
-
-            console.log ("Adding feedback object to chain ...");
-            this.feedbackChain.push (feedbackObject);
-          }
-        }
-      } else {
-        console.log ("Possible internal error: feedback has no length");
-      }
-    } else {
-      console.log ("Possible internal error: feedback is undefined");
-    }
-
-    this.setState({lastFeedback: feedback});
-
-    return (feedback);
-  }
-  */
-
-  /**
-   *
-   */
-  /* 
-  addFeedback (aFeedback,aType,aContent) {
-    for (let i=0;i<aFeedback.length;i++) {
-      let testFeedback=aFeedback [i];
-      // We already have this one
-      if (testFeedback.details==aContent) {
-        return (aFeedback);
-      }
-    }
-
-    aFeedback.push ({
-      "issue": aType,
-      "details": aContent
-    });    
-    
-    return (aFeedback);
-  }
-  */
-
-  /**
-   *
-   */
-  /* 
-  generateFeedback (anAction) {
-    console.log ("generateFeedback ()");
-
-    let feedback=[];
-
-    var graph=this.refs ["grapheditor"].getGraphData ();
-
-    // First check is to see if any conclusions are connected the wrong way to
-    // premises
-
-    for (let l=0;l<graph.edges.length;l++) {
-      let edge=graph.edges [l];
-      if (edge.fresh==true) {
-        let from=edge.from;
-        let to=edge.to;
-
-        if (this.graphTools.getEdgeById (graph,to)!=null) {
-          let fromNode=this.graphTools.getNodeById (graph,from);
-          
-          // We're testing the inverse from what we're after. We only need
-          // to find those cases in which an element that isn't an objection
-          // or a group of objections is creating a link to a link
-
-          if (fromNode!=null) { // Could be a group 
-            //console.log ("We have a from node");
-
-            if (fromNode.id!="objection") {
-              //console.log ("Found a non-objection from node");
-
-              let target=this.graphTools.getEdgeById (graph,to);
-              if (target!=null) {
-                //console.log ("The to id represents an edge");
-                feedback=this.addFeedback (feedback,"mismatch","You can only draw an arrow to another arrow if the arrow is coming from an objection or a group of objections");
-                return(feedback);
-              }
-            }          
-          } else {
-            //console.log ("There is no from node for this edge, maybe it's a group");
-
-            let fromGroup=this.graphTools.getGroupById (graph,from);
-
-            if (fromGroup!=null) {
-              //console.log ("It is indeed a group");
-              let testList=fromGroup.nodes;
-              let found=true;
-              for (let m=0;m<testList.length;m++) {
-                let testNodeId=testList [m];
-                let testNode=this.graphTools.getNodeById(graph,testNodeId);
-                if (testNode!=null) {
-                  if (testNode.id!="objection") {
-                    console.log ("Bump: " + testNode.id);
-                    found=false;
-                  } 
-                }
-              }
-
-              if (found==false) {
-                feedback=this.addFeedback (feedback,"mismatch","You can only draw an arrow to another arrow if the arrow is coming from an objection or a group of objections");
-                return(feedback);
-              }            
-            }
-          }
-        } else {
-          console.log ("The target element is not an edge, we don't have to do edge to edge checking");
-        }
-      }
-    }
-
-    for (let i=0;i<this.state.rules.length;i++) {
-      let ruleObject=this.state.rules [i];
-
-      console.log ("Prepping rule string: '" + ruleObject.rule + "'");
-
-      let splitter=ruleObject.rule.split (" ");
-
-      if (splitter.length>2) {
-        console.log ("Checking rule with length: " + splitter.length);
-
-        let from=splitter [0].toLowerCase().trim();
-        let operator=splitter [1].trim();
-        let to=splitter [2].toLowerCase().trim();
-
-        for (let j=0;j<graph.edges.length;j++) {
-          let edge=graph.edges [j];
-          if (edge.fresh==true) {
-            // We can't process any rules right now in case the arrow comes from a group
-            if (this.graphTools.isGroup (graph,edge.from)==false) {
-              let fromNode=this.graphTools.getNodeById (graph,edge.from);
-              let toNode=this.graphTools.getNodeById (graph,edge.to);
-
-              if (fromNode==null) {
-                console.log ("Internal error: unable to retrieve the node from which a link was created");
-                return;
-              }
-
-               if (toNode==null) {
-                console.log ("Internal error: unable to retrieve the node to which a link was created");
-                return;
-              }
-
-              let fromTest=fromNode.id.toLowerCase().trim();
-              let toTest=toNode.id.toLowerCase().trim();
-
-              if (from=="*") {
-                fromTest="*";
-              }
-
-              if (to=="*") {
-                toTest="*";
-              }
-
-              console.log ("from:(" + fromTest + ", " + from + ") && to:("+toTest+", "+to+")");           
-              
-              // Test to see if we should swap operands. Swap sides and operators so that we only 
-              // have 1 rule to check in code
-              
-              let swap=false;
-
-              if (operator=="<!") {
-                operator="!>";
-                swap=true;
-              }
-
-              if (operator=="<") {
-                operator=">";
-                swap=true;
-              }
-
-              if (swap==true) {
-                console.log ("Swapping operands ...");
-                let tmpFrom=from;
-                from=fromTest;
-                fromTest=tmpFrom;
-
-                let tmpTo=to;
-                to=toTest;
-                toTest=tmpTo;
-              }
-
-              // Now we can test the rules in turn
-
-              //>----------------------------------------------------------------------------------
-
-              if ((fromTest==from) && (toTest==to) && (operator=="!>")) {
-                console.log ("Matched operator !>");
-
-                console.log ("Firing rule: " + ruleObject.feedback);
-
-                feedback=this.addFeedback (feedback,"mismatch",ruleObject.feedback);
-              }
-
-              //>----------------------------------------------------------------------------------
-
-              if ((fromTest==from) && (operator==">")) {
-                console.log ("Matched operator >, testing against: " + to);
-
-                let targets=to.split (";");
-                console.log ("Testing against option(s): " + JSON.stringify(targets));
-                let found=false;
-                for (let w=0;w<targets.length;w++) {
-                  console.log ("Comparing " + targets [w].trim () + " to: " + toTest);
-                  if (targets [w].trim ()==toTest) {
-                    found=true;
-                  }
-                }
-                if (found==false) {
-                  feedback=this.addFeedback (feedback,"mismatch",ruleObject.feedback);
-                }           
-              }
-
-              //>----------------------------------------------------------------------------------
-
-            } else {
-              console.log ("We don't have or check rules for groups yet");
-            }
-          }
-        }         
-      }
-    }
-         
-    return (feedback);
-  }
-  */
-
-  /**
    * https://www.w3schools.com/jsref/obj_keyboardevent.asp
    */
   onKeyDown (e) {
@@ -1365,9 +1123,10 @@ class KPipelineEditor extends Component {
     */
 
     //toolbar=<ToolBar direction="vertical" ref="select" data={this.state.menu} handleIconClicked={this.handleIconClicked.bind()}></ToolBar>;
-    toolbar=<KToolbar style={{fontSize: "15pt", borderRight: "1px solid #545454"}} direction={KToolbar.DIRECTION_VERTICAL}>    
+    toolbar=<KToolbar style={{fontSize: "16pt", borderRight: "1px solid #545454"}} direction={KToolbar.DIRECTION_VERTICAL}>    
       <KToolbarItem onClick={(e) => this.onToolbarItemClick (5)}><GiArrowCursor /></KToolbarItem>
       <KToolbarItem onClick={(e) => this.onToolbarItemClick (5)}><RiDragMove2Line /></KToolbarItem>      
+      <KToolbarItem onClick={(e) => this.onToolbarItemClick (5)}><TbPlugConnected /></KToolbarItem>      
       <KToolbarItem onClick={(e) => this.onToolbarItemClick (5)}><CgNotes /></KToolbarItem>
       <KToolbarItem onClick={(e) => this.onToolbarItemClick ("grid")}><MdGridOn /></KToolbarItem>
       <KToolbarItem onClick={(e) => this.onToolbarItemClick (5)}><IoArrowUndoCircleOutline /></KToolbarItem>
